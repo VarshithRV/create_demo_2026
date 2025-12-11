@@ -203,15 +203,15 @@ def launch_setup(context, *args, **kwargs):
             robot_description_kinematics,
             {
                 "planning_group": "left_ur16e",
-                "shoulder_pan": 1.6606996059417725,
-                "shoulder_lift": -1.4407718938640137,
-                "elbow": -1.1456663608551025,
-                "wrist_1": -2.125268121758932,
-                "wrist_2": 1.45247220993042,
-                "wrist_3": 1.677489995956421,
-                "side":"left",
+                "shoulder_pan": -0.2518866697894495,
+                "shoulder_lift": -1.2164602738669892,
+                "elbow": -2.014770746231079,
+                "wrist_1": -3.0570813618102015,
+                "wrist_2": -2.2569201628314417,
+                "wrist_3": 0.0768733024597168,
+                "side": "left",
             },
-            {"use_sim_time":use_sim_time},
+            {"use_sim_time": use_sim_time},
         ],
     )
 
@@ -226,17 +226,18 @@ def launch_setup(context, *args, **kwargs):
             robot_description_kinematics,
             {
                 "planning_group": "right_ur16e",
-                "shoulder_pan": -4.906626049672262,
-                "shoulder_lift": -1.626050134698385,
-                "elbow": 1.2541254202472132,
-                "wrist_1": -1.1249484878829499,
-                "wrist_2": -1.3437789122210901,
-                "wrist_3": -1.0042908827411097,
-                "side":"right",
+                "shoulder_pan": -3.2785912195788782,
+                "shoulder_lift": -1.6929518185057582,
+                "elbow": 2.1487663427936,
+                "wrist_1": -2.3819247684874476,
+                "wrist_2": -2.7175918261157435,
+                "wrist_3": 1.8448426723480225,
+                "side": "right",
             },
-            {"use_sim_time":use_sim_time},
+            {"use_sim_time": use_sim_time},
         ],
     )
+
 
     apriltag_grid_detector = Node(
         package="apriltag_grid_detector",
