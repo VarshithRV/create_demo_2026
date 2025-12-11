@@ -9,10 +9,36 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclpy REQUIRED)
-find_package(apriltag_grid_detector REQUIRED)
-find_package(dual_arm_workcell_bringup REQUIRED)
-find_package(motion_planning_abstractions REQUIRED)
-find_package(motion_planning_abstractions_msgs REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(std_srvs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(tf2_eigen REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
+find_package(ur_msgs REQUIRED)
+
+set(THIS_PACKAGE_INCLUDE_DEPENDS 
+  rclcpp
+  std_msgs
+  std_srvs
+  geometry_msgs
+  tf2
+  tf2_eigen
+  tf2_geometry_msgs
+  ur_msgs
+)
+
+install(
+  DIRECTORY launch 
+  DESTINATION share/${PROJECT_NAME}
+)
+
+add_executable(human_to_robot_handover src/human_to_robot_handover_v2.cpp)
+ament_target_dependencies(human_to_robot_handover ${THIS_PACKAGE_INCLUDE_DEPENDS})
+install(TARGETS
+human_to_robot_handover
+DESTINATION lib/${PROJECT_NAME}
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
