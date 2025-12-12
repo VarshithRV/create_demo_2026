@@ -178,9 +178,9 @@ def launch_setup(context, *args, **kwargs):
                 "servo_controller": "left_forward_position_controller",
                 "non_servo_controller": "left_scaled_joint_trajectory_controller",
                 "servo_node_namespace": "left_servo_node_main",
-                "P_GAIN": 3.0,
+                "P_GAIN": 9.0,
                 "I_GAIN": 0.0,
-                "D_GAIN": 1.0,
+                "D_GAIN": 0.0,
                 "K_GAIN": 1.0,
                 "terminate":False, # should the tracking terminate?
                 "linear_stop_threshold": 0.01, #m
@@ -266,7 +266,7 @@ def launch_setup(context, *args, **kwargs):
         left_pose_tracking_node,
         left_preaction_server,
         right_preaction_server,
-        apriltag_grid_detector,
+        # apriltag_grid_detector,
     ]
     
     return nodes_to_start
