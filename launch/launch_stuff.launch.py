@@ -175,10 +175,10 @@ def launch_setup(context, *args, **kwargs):
             {
                 "planning_group": "left_ur16e",
                 "endeffector_link": "left_tool0",
-                "servo_controller": "left_forward_position_controller",
+                "servo_controller": "left_forward_velocity_controller",
                 "non_servo_controller": "left_scaled_joint_trajectory_controller",
                 "servo_node_namespace": "left_servo_node_main",
-                "P_GAIN": 9.0,
+                "P_GAIN": 1.0,
                 "I_GAIN": 0.0,
                 "D_GAIN": 0.0,
                 "K_GAIN": 1.0,
