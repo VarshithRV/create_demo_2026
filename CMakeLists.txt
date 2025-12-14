@@ -33,7 +33,7 @@ install(
   DESTINATION share/${PROJECT_NAME}
 )
 
-add_executable(human_to_robot_handover src/human_to_robot_handover_v2.cpp)
+add_executable(human_to_robot_handover src/human_to_robot_handover.cpp)
 ament_target_dependencies(human_to_robot_handover ${THIS_PACKAGE_INCLUDE_DEPENDS})
 install(TARGETS
 human_to_robot_handover
