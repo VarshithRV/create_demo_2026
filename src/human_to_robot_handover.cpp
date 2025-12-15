@@ -73,7 +73,7 @@ class HumanToRobotHandover : public rclcpp::Node{
                   
                     Eigen::Quaterniond q_out = q_in * q_offset;
                     q_out.normalize();
-                  
+                    
                     pose_cam.pose.orientation.w = q_out.w();
                     pose_cam.pose.orientation.x = q_out.x();
                     pose_cam.pose.orientation.y = q_out.y();
@@ -415,7 +415,7 @@ class HumanToRobotHandover : public rclcpp::Node{
         bool object_seen_ = false;
         double latest_object_z_ = 0.0;  
         double handover_z_threshold_ = 0.15;     // m
-        Eigen::Vector3d object_to_grasp_linear_transform_{0.015, 0.04, 0.04};
+        Eigen::Vector3d object_to_grasp_linear_transform_{0.04, 0.04, -0.015};
         Eigen::Vector3d object_to_grasp_euler_transform_{0.0, -M_PI/2, 0.0};
         double blind_grasp_distance_ = 0.07;     // m
         double move_back_distance_ = 0.10;       // m   
