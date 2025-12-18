@@ -186,7 +186,7 @@ def launch_setup(context, *args, **kwargs):
                 "linear_stop_threshold": 0.01, #m
                 "angular_stop_threshold": 0.01, #rad
                 "planning_frame":"world",
-                "linear_iir_alpha":0.85, # range [0.0,1.0], more implies filter more
+                "linear_iir_alpha":0.85, # range [0.0,1.0], more implies filter more # recommended amount is 85%
                 "angular_iir_alpha":0.0, # range [0.0,1.0], more implies filter more
             },
         ]
