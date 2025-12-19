@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
 
     amplititude_x = 0.05
-    # amplititude_y = 0.05
+    amplititude_y = 0.05
     amplititude_y = 0.0
     amplititude_z = 0.05
 
@@ -38,9 +38,9 @@ if __name__ == "__main__":
     i = 0 
 
     while(rclpy.ok()):
-        x = center_x + (amplititude_x * math.sin(i + math.pi/2))
-        y = center_y + (amplititude_y * math.sin(i))
-        z = center_z + (amplititude_z * math.sin(i))
+        x = center_x + (amplititude_x * math.sin(i/50 + math.pi/2))
+        y = center_y + (amplititude_y * math.sin(i/50))
+        z = center_z + (amplititude_z * math.sin(i/50))
         
         msg.position.x = x
         msg.position.y = y

@@ -266,7 +266,7 @@ def launch_setup(context, *args, **kwargs):
         left_pose_tracking_node,
         left_preaction_server,
         right_preaction_server,
-        # apriltag_grid_detector,
+        apriltag_grid_detector,
     ]
     
     return nodes_to_start
