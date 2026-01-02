@@ -106,20 +106,20 @@ class HumanToRobotHandover : public rclcpp::Node{
                 }
             );
 
-        linear_error_subscription_ = this->create_subscription<std_msgs::msg::Float32>("/left_pose_tracker/linear_error",10,
-          [this](const std_msgs::msg::Float32::SharedPtr msg){
-            linear_error_ = msg->data;
-          }
-        );
-
-        angular_error_subscription_ = this->create_subscription<std_msgs::msg::Float32>("/left_pose_tracker/angular_error",10,
-          [this](const std_msgs::msg::Float32::SharedPtr msg){
-            angular_error_ = msg->data;
-          }
-        );
-
-        setpoint_pose_publisher_ = this->create_publisher<geometry_msgs::msg::Pose>("/left_pose_tracker/target_pose",10);
-    }
+            linear_error_subscription_ = this->create_subscription<std_msgs::msg::Float32>("/left_pose_tracker/linear_error",10,
+              [this](const std_msgs::msg::Float32::SharedPtr msg){
+                linear_error_ = msg->data;
+              }
+            );
+          
+            angular_error_subscription_ = this->create_subscription<std_msgs::msg::Float32>("/left_pose_tracker/angular_error",10,
+              [this](const std_msgs::msg::Float32::SharedPtr msg){
+                angular_error_ = msg->data;
+              }
+            );
+          
+            setpoint_pose_publisher_ = this->create_publisher<geometry_msgs::msg::Pose>("/left_pose_tracker/target_pose",10);
+      }
 
     private:
         // call Trigger client synchronously (no nested spin)

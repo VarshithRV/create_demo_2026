@@ -40,6 +40,13 @@ human_to_robot_handover
 DESTINATION lib/${PROJECT_NAME}
 )
 
+add_executable(human_to_robot_handover_v2 src/human_to_robot_handover_v2.cpp)
+ament_target_dependencies(human_to_robot_handover_v2 ${THIS_PACKAGE_INCLUDE_DEPENDS})
+install(TARGETS
+human_to_robot_handover_v2
+DESTINATION lib/${PROJECT_NAME}
+)
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
