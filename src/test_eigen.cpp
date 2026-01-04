@@ -1,5 +1,8 @@
 #include <iostream>
 #include <Eigen/Dense>
+#include <Eigen/Geometry>
+#include <unsupported/Eigen/EulerAngles>
+#include <cmath>
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -81,6 +84,54 @@ int main(){
     std::cout<<"Norm = "<<fixed_size_matrix.norm()<<" Squared norm = "<<fixed_size_matrix.squaredNorm()<<std::endl;
     std::cout<<"Lp norm of 1 "<<fixed_size_matrix.lpNorm<1>()<<std::endl;
 
-    
+    // Geometry
+    // Angle axis
+    Eigen::Vector3d axis{1,1,1};
+    axis/=axis.norm();
+    std::cout<<"Axis : "<<axis<<std::endl;
+    Eigen::AngleAxisd rotation = Eigen::AngleAxisd(1.5,axis);
+    std::cout<<"Rotation angle = "<<rotation.angle()<<std::endl;
+    std::cout<<"Rotation axis = "<<rotation.axis()<<std::endl;
+    std::cout<<"Rotation matrix = "<<rotation.toRotationMatrix()<<std::endl;
+    std::cout<<"Rotation inverse angle = "<<rotation.inverse().angle()<<std::endl;
+    std::cout<<"Rotation inverse axis = "<<rotation.inverse().axis()<<std::endl;
+
+    // Quaternion
+    Eigen::Quaternion<double> rotation_q(rotation); // quaternion from angle axis
+    std::cout<<"Quaternion w = "<<rotation_q.w()<<std::endl;
+    std::cout<<"Quaternion x = "<<rotation_q.x()<<std::endl;
+    std::cout<<"Quaternion y = "<<rotation_q.y()<<std::endl;
+    std::cout<<"Quaternion z = "<<rotation_q.z()<<std::endl;
+    std::cout<<"Quaternion w = "<<rotation_q.coeffs()[3]<<std::endl;
+    rotation_q.coeffs()[3] = 0.0; // reset to test the normalization
+    rotation_q.normalize(); // normalize the initialized quaternion
+    std::cout<<"Quaternion w = "<<rotation_q.w()<<std::endl;
+    std::cout<<"Quaternion x = "<<rotation_q.x()<<std::endl;
+    std::cout<<"Quaternion y = "<<rotation_q.y()<<std::endl;
+    std::cout<<"Quaternion z = "<<rotation_q.z()<<std::endl;
+
+    // Rotation matrix
+    Eigen::MatrixXd rotation_m(3,3);
+    rotation_m = rotation_q.toRotationMatrix();
+    std::cout<<"Rotation matrix = "<<rotation_m<<std::endl;
+    Eigen::Matrix3d rotation2_m(rotation_m);
+    std::cout<<"Euler angles of the rotation matrix = "<<rotation2_m.eulerAngles(2,1,0)<<std::endl;
+
+    // Euler rotations
+    Eigen::AngleAxis<double> yaw(M_PI/2, Eigen::Vector3d::UnitX());
+    Eigen::AngleAxis<double> pitch(M_PI/2, Eigen::Vector3d::UnitY());
+    Eigen::AngleAxis<double> roll(M_PI/2, Eigen::Vector3d::UnitX());
+    Eigen::Matrix3d euler_rotation(yaw*pitch*roll);
+    std::cout<<"Rotation matrix from euler angles (pi/2, pi/2, pi/2) = "<<euler_rotation<<std::endl;
+
+    // transformation object
+    Eigen::Transform<double, 3, Eigen::TransformTraits::Affine> t(euler_rotation);
+    std::cout<<"Tranformation object constructed from the same rotation = "<<t.matrix()<<std::endl;
+    std::cout<<"Inverse of t = "<<t.inverse().data()<<std::endl;
+    std::cout<<"Rotation of t = "<<t.rotation()<<std::endl;
+    std::cout<<"Translation of t = "<<t.translation()<<std::endl;
+    t.translation()[0] = 1.0; // edit the matrix
+    std::cout<<"Translation of t = "<<t.translation()<<std::endl;
+
     return 0;
 }
