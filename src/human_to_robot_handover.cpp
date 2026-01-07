@@ -46,9 +46,12 @@ class HumanToRobotHandover : public rclcpp::Node{
             using std::placeholders::_1;
             using std::placeholders::_2;
           
+            rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr grasp_pose_publisher_;
+            grasp_pose_publisher_ = this->create_publisher<geometry_msgs::msg::PoseStamped>("~/grasp_pose",10);
+
             human_to_robot_handover_ = this->create_service<std_srvs::srv::Trigger>("~/handover",std::bind(&HumanToRobotHandover::handover_callback_, this, _1, _2),rmw_qos_profile_services_default,callback_group_);
             object_pose_subscription_ = this->create_subscription<geometry_msgs::msg::PoseStamped>("/apriltag_grid_detector/object0_filtered_pose",10,
-                [this](const geometry_msgs::msg::PoseStamped::SharedPtr msg){
+                [this,grasp_pose_publisher_](const geometry_msgs::msg::PoseStamped::SharedPtr msg){
                     geometry_msgs::msg::PoseStamped pose_cam = *msg;
                   
                     // this is in the objects coordinates and not in camera coordinates
@@ -103,6 +106,7 @@ class HumanToRobotHandover : public rclcpp::Node{
                     
                     current_setpoint_pose_ = std::make_shared<geometry_msgs::msg::Pose>();
                     *current_setpoint_pose_ = pose_world.pose;
+                    grasp_pose_publisher_->publish(pose_world);
                 }
             );
 
