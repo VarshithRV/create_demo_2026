@@ -32,7 +32,7 @@ if __name__ == "__main__":
     amplititude_z = 0.05
 
     center_x = -0.251
-    center_y = -0.249
+    center_y = -0.149
     center_z = 0.270
 
     i = 0 
