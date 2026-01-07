@@ -54,9 +54,9 @@ class HumanToRobotHandover : public rclcpp::Node{
                 [this,grasp_pose_publisher_](const geometry_msgs::msg::PoseStamped::SharedPtr msg){
                     geometry_msgs::msg::PoseStamped pose_cam = *msg;
                   
-                    // this is in the objects coordinates and not in camera coordinates
                     Eigen::Vector3d p_in(pose_cam.pose.position.x,pose_cam.pose.position.y,pose_cam.pose.position.z);
                     Eigen::Quaterniond q_in(pose_cam.pose.orientation.w,pose_cam.pose.orientation.x,pose_cam.pose.orientation.y,pose_cam.pose.orientation.z);
+                    q_in.normalize();
                     
                     // transform object_to_grasp_linear_transform_ to object frame
                     Eigen::Quaterniond offset_in_object_frame = q_in * Eigen::Quaterniond{0.0,object_to_grasp_linear_transform_.x(),object_to_grasp_linear_transform_.y(),object_to_grasp_linear_transform_.z()} * q_in.inverse();
@@ -66,8 +66,6 @@ class HumanToRobotHandover : public rclcpp::Node{
                     pose_cam.pose.position.x = p_out.x();
                     pose_cam.pose.position.y = p_out.y();
                     pose_cam.pose.position.z = p_out.z();
-                  
-                    q_in.normalize();
                   
                     Eigen::AngleAxisd rollAngle(object_to_grasp_euler_transform_.x(), Eigen::Vector3d::UnitX());
                     Eigen::AngleAxisd pitchAngle(object_to_grasp_euler_transform_.y(), Eigen::Vector3d::UnitY());
@@ -314,9 +312,9 @@ class HumanToRobotHandover : public rclcpp::Node{
             while (rclcpp::ok()){
                 setpoint_pose_publisher_->publish(approach_pose);
                 RCLCPP_INFO(this->get_logger(),"Linear error : %f",linear_error_);
-                bool linear_ok = (linear_error_ < linear_convergence_threshold_ + 0.05); // hardcoding some stuff
+                bool linear_ok = (linear_error_ < linear_convergence_threshold_ + 0.05); // hardcoding some stuff, test, test
                 bool angular_ok = (angular_error_ < angular_convergence_threshold_);
-                // if (linear_ok && angular_ok)
+                // if (linear_ok && angular_ok) // test, test
                 if (linear_ok){
                     RCLCPP_INFO(this->get_logger(),"Reached approach pose: linear_error=%.4f, angular_error=%.4f",linear_error_, angular_error_);
                     break;
@@ -339,9 +337,10 @@ class HumanToRobotHandover : public rclcpp::Node{
             start_time = this->now();
             while (rclcpp::ok()){
                 setpoint_pose_publisher_->publish(grasp_pose);
-                bool linear_ok = (linear_error_ < linear_convergence_threshold_);
+                bool linear_ok = (linear_error_ < linear_convergence_threshold_ + 0.05); // again, hardcoding some stuff, test, test
                 bool angular_ok = (angular_error_ < angular_convergence_threshold_);
-                if (linear_ok && angular_ok){
+                if(linear_ok){ // test
+                // if (linear_ok && angular_ok){ 
                     RCLCPP_INFO(this->get_logger(),"Reached grasp pose: linear_error=%.4f, angular_error=%.4f",linear_error_, angular_error_);
                     break;
                 }
@@ -360,6 +359,8 @@ class HumanToRobotHandover : public rclcpp::Node{
                 return;
             }
         
+            // ACTUATE HERE
+            
             // Hold grasp pose
             RCLCPP_INFO(this->get_logger(), "Holding grasp pose for 1 second");
             publish_pose_repeated(grasp_pose, 50);
