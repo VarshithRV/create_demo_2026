@@ -42,6 +42,8 @@ class HumanToRobotHandover : public rclcpp::Node{
             unprepare_left_pose_tracker_client_ = this->create_client<std_srvs::srv::Trigger>("/left_pose_tracker/unprepare_tracker",rmw_qos_profile_services_default,callback_group_);
             start_left_pose_tracker_client_ = this->create_client<std_srvs::srv::Trigger>("/left_pose_tracker/start_tracker",rmw_qos_profile_services_default,callback_group_);
             stop_left_pose_tracker_client_ = this->create_client<std_srvs::srv::Trigger>("/left_pose_tracker/stop_tracker",rmw_qos_profile_services_default,callback_group_);
+            std::string io_service_name =  "left_io_and_status_controller/set_io";
+            set_io_client_ = this->create_client<ur_msgs::srv::SetIO>(io_service_name);
           
             using std::placeholders::_1;
             using std::placeholders::_2;
@@ -121,6 +123,54 @@ class HumanToRobotHandover : public rclcpp::Node{
             );
           
             setpoint_pose_publisher_ = this->create_publisher<geometry_msgs::msg::Pose>("/left_pose_tracker/target_pose",10);
+      }
+
+      void gripper_on()
+      {
+          if (pin_out1_)
+          {
+              auto request = std::make_shared<ur_msgs::srv::SetIO::Request>();
+              request->fun = request->FUN_SET_DIGITAL_OUT;
+              request->pin = pin_out1_;
+              request->state = request->STATE_ON;
+              auto result = set_io_client_->async_send_request(request);
+              (void)result;
+              RCLCPP_INFO(this->get_logger(), "Gripper on (pin_out1)");
+          }
+          if (pin_out2_)
+          {
+              auto request = std::make_shared<ur_msgs::srv::SetIO::Request>();
+              request->fun = request->FUN_SET_DIGITAL_OUT;
+              request->pin = pin_out2_;
+              request->state = request->STATE_ON;
+              auto result = set_io_client_->async_send_request(request);
+              (void)result;
+              RCLCPP_INFO(this->get_logger(), "Gripper on (pin_out2)");
+          }
+      }
+
+      void gripper_off()
+      {
+          if (pin_out1_)
+          {
+              auto request = std::make_shared<ur_msgs::srv::SetIO::Request>();
+              request->fun = request->FUN_SET_DIGITAL_OUT;
+              request->pin = pin_out1_;
+              request->state = request->STATE_OFF;
+              auto result = set_io_client_->async_send_request(request);
+              (void)result;
+              RCLCPP_INFO(this->get_logger(), "Gripper off (pin_out1)");
+          }
+          if (pin_out2_)
+          {
+              auto request = std::make_shared<ur_msgs::srv::SetIO::Request>();
+              request->fun = request->FUN_SET_DIGITAL_OUT;
+              request->pin = pin_out2_;
+              request->state = request->STATE_OFF;
+              auto result = set_io_client_->async_send_request(request);
+              (void)result;
+              RCLCPP_INFO(this->get_logger(), "Gripper off (pin_out2)");
+          }
       }
 
     private:
@@ -360,6 +410,7 @@ class HumanToRobotHandover : public rclcpp::Node{
             }
         
             // ACTUATE HERE
+            gripper_on();
             
             // Hold grasp pose
             RCLCPP_INFO(this->get_logger(), "Holding grasp pose for 1 second");
@@ -383,6 +434,11 @@ class HumanToRobotHandover : public rclcpp::Node{
                 return;
             }
         
+            // wait for 3s and drop the object
+            using namespace std::chrono_literals;
+            std::this_thread::sleep_for(3s);
+            gripper_off();
+            
             RCLCPP_INFO(this->get_logger(), "Handover sequence completed");
             response->success = true;
             response->message = "Handover completed successfully";
@@ -428,6 +484,9 @@ class HumanToRobotHandover : public rclcpp::Node{
         double angular_error_ = 3.14;            // rad 
         double linear_convergence_threshold_ = 0.05;   // m
         double angular_convergence_threshold_ = 0.1;  // rad (~3 deg)
+        int pin_out1_ = 0;
+        int pin_out2_ = 0;
+        rclcpp::Client<ur_msgs::srv::SetIO>::SharedPtr set_io_client_;
 };
 
 int main(int argc, char **argv)
