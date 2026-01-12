@@ -52,6 +52,9 @@ class HumanToRobotHandover : public rclcpp::Node{
             grasp_pose_publisher_ = this->create_publisher<geometry_msgs::msg::PoseStamped>("~/grasp_pose",10);
 
             human_to_robot_handover_ = this->create_service<std_srvs::srv::Trigger>("~/handover",std::bind(&HumanToRobotHandover::handover_callback_, this, _1, _2),rmw_qos_profile_services_default,callback_group_);
+            gripper_on_ = this->create_service<std_srvs::srv::Trigger>("~/gripper_on",std::bind(&HumanToRobotHandover::gripper_on_callback, this, _1, _2),rmw_qos_profile_services_default,callback_group_);
+            gripper_off_ = this->create_service<std_srvs::srv::Trigger>("~/gripper_off",std::bind(&HumanToRobotHandover::gripper_off_callback, this, _1, _2),rmw_qos_profile_services_default,callback_group_);
+
             object_pose_subscription_ = this->create_subscription<geometry_msgs::msg::PoseStamped>("/apriltag_grid_detector/object0_filtered_pose",10,
                 [this,grasp_pose_publisher_](const geometry_msgs::msg::PoseStamped::SharedPtr msg){
                     geometry_msgs::msg::PoseStamped pose_cam = *msg;
@@ -276,6 +279,14 @@ class HumanToRobotHandover : public rclcpp::Node{
             return result;
         }
 
+        void gripper_on_callback(const std_srvs::srv::Trigger::Request::SharedPtr request,std_srvs::srv::Trigger::Response::SharedPtr response){
+          gripper_on();
+        }
+
+        void gripper_off_callback(const std_srvs::srv::Trigger::Request::SharedPtr request,std_srvs::srv::Trigger::Response::SharedPtr response){
+          gripper_off();
+        }
+
         // full handover workflow
         void handover_callback_(const std_srvs::srv::Trigger::Request::SharedPtr /*request*/,std_srvs::srv::Trigger::Response::SharedPtr response){
             RCLCPP_INFO(this->get_logger(), "Handover sequence started");
@@ -457,6 +468,8 @@ class HumanToRobotHandover : public rclcpp::Node{
         
         // servers
         rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr human_to_robot_handover_;    
+        rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr gripper_on_;
+        rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr gripper_off_;
         
         // subscriptions
         rclcpp::Subscription<geometry_msgs::msg::PoseStamped>::SharedPtr object_pose_subscription_;
@@ -484,7 +497,7 @@ class HumanToRobotHandover : public rclcpp::Node{
         double angular_error_ = 3.14;            // rad 
         double linear_convergence_threshold_ = 0.05;   // m
         double angular_convergence_threshold_ = 0.1;  // rad (~3 deg)
-        int pin_out1_ = 0;
+        int pin_out1_ = 13;
         int pin_out2_ = 0;
         rclcpp::Client<ur_msgs::srv::SetIO>::SharedPtr set_io_client_;
 };
