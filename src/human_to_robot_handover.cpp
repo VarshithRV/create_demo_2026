@@ -419,6 +419,9 @@ class HumanToRobotHandover : public rclcpp::Node{
                 response->message = "Interrupted while tracking grasp pose";
                 return;
             }
+
+            using namespace std::chrono_literals;
+            std::this_thread::sleep_for(0.2s);
         
             // ACTUATE HERE
             gripper_on();
