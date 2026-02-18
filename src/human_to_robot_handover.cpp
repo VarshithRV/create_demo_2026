@@ -456,16 +456,16 @@ class HumanToRobotHandover : public rclcpp::Node{
       //   }
       //   RCLCPP_INFO(this->get_logger(),"Object lift detected, waiting for some time and then starting");
       // }
-
+      
       if(!current_setpoint_pose_){
         RCLCPP_ERROR(this->get_logger(), "No valid current_setpoint_pose_ available");
         response->success = false;
         response->message = "No valid setpoint pose";
         return;
       }
-
-      using namespace std::chrono_literals;
-      std::this_thread::sleep_for(3s);
+      
+      // using namespace std::chrono_literals;
+      // std::this_thread::sleep_for(3s);
 
       geometry_msgs::msg::Pose grasp_pose = *current_setpoint_pose_;
       geometry_msgs::msg::Pose approach_pose = compute_blind_approach_pose(grasp_pose);
@@ -494,6 +494,8 @@ class HumanToRobotHandover : public rclcpp::Node{
       RCLCPP_INFO(this->get_logger(), "Tracking approach pose until error < thresholds");
       auto start_time = this->now();
       while(rclcpp::ok()){
+        grasp_pose = *current_setpoint_pose_;
+        approach_pose = compute_blind_approach_pose(grasp_pose);
         setpoint_pose_publisher_->publish(approach_pose);
         RCLCPP_INFO(this->get_logger(), "Linear error : %f", linear_error_);
 
@@ -524,6 +526,7 @@ class HumanToRobotHandover : public rclcpp::Node{
       RCLCPP_INFO(this->get_logger(), "Tracking final grasp pose");
       start_time = this->now();
       while(rclcpp::ok()){
+        grasp_pose = *current_setpoint_pose_;
         setpoint_pose_publisher_->publish(grasp_pose);
 
         bool linear_ok = (linear_error_ < linear_convergence_threshold_ + 0.05);
