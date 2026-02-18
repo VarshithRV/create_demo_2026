@@ -73,16 +73,14 @@ workflow :
 using namespace std::chrono_literals;
 
 class HumanRobotHandover : public rclcpp::Node{
+    
     public:
-    HumanRobotHandover():Node("human_robot_handover_node"),threshold_height_(THRESHOLD_HEIGHT){        
+    HumanRobotHandover():Node("human_robot_handover_node"),threshold_height_(THRESHOLD_HEIGHT){            
         
         // subscription for object pose stamped
         object_subscription_ = this->create_subscription<geometry_msgs::msg::PoseStamped>("/apriltag_grid_detector/object0_filtered_pose",10,
             [this](const geometry_msgs::msg::PoseStamped::SharedPtr msg){
-                // need to learn rotation theory and Eigen C++ implementation
-                // tf to planning frame which is world
-                // then rotate wrt its own frame
-                target_grasping_pose_ = msg;
+                
             }
         );
 
