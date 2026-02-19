@@ -554,6 +554,8 @@ class HumanToRobotHandover : public rclcpp::Node{
       }
 
       // ACTUATE HERE
+      using namespace std::chrono_literals;
+      std::this_thread::sleep_for(1s);
       gripper_on();
 
       // Hold grasp pose
@@ -625,13 +627,13 @@ class HumanToRobotHandover : public rclcpp::Node{
     double handover_z_threshold_ = 0.15;     // m
     Eigen::Vector3d object_to_grasp_linear_transform_{0.04, 0.04, -0.015};
     Eigen::Vector3d object_to_grasp_euler_transform_{0.0, -M_PI/2, 0.0};
-    double blind_grasp_distance_ = 0.07;     // m
-    double move_back_distance_ = 0.10;       // m
+    double blind_grasp_distance_ = 0.10;     // m
+    double move_back_distance_ = 0.18;       // m
     double linear_error_ = 100.0;            // m
     double angular_error_ = 3.14;            // rad
     double linear_convergence_threshold_ = 0.05;   // m
     double angular_convergence_threshold_ = 0.1;   // rad (~3 deg)
-    int pin_out1_ = 0;
+    int pin_out1_ = 13;
     int pin_out2_ = 0;
     rclcpp::Client<ur_msgs::srv::SetIO>::SharedPtr set_io_client_;
     std::string serial_port_ = "/dev/ttyACM0";
