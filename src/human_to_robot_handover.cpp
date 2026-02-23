@@ -44,6 +44,7 @@ class HumanToRobotHandover : public rclcpp::Node{
       
       callback_group_ = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
       left_preaction_client_ = this->create_client<std_srvs::srv::Trigger>("/left_preaction_server/move_to_state", rmw_qos_profile_services_default, callback_group_);
+      robot_to_robot_handover_client_ = this->create_client<std_srvs::srv::Trigger>("/robot_to_robot_handover", rmw_qos_profile_services_default, callback_group_);
       right_preaction_client_ = this->create_client<std_srvs::srv::Trigger>("/right_preaction_server/move_to_state", rmw_qos_profile_services_default, callback_group_);
       prepare_left_pose_tracker_client_ = this->create_client<std_srvs::srv::Trigger>("/left_pose_tracker/prepare_tracker", rmw_qos_profile_services_default, callback_group_);
       unprepare_left_pose_tracker_client_ = this->create_client<std_srvs::srv::Trigger>("/left_pose_tracker/unprepare_tracker", rmw_qos_profile_services_default, callback_group_);
@@ -583,7 +584,15 @@ class HumanToRobotHandover : public rclcpp::Node{
       // wait for 3s and drop the object
       using namespace std::chrono_literals;
       std::this_thread::sleep_for(3s);
-      gripper_off();
+      
+      // gripper_off();
+
+      // robot to robot handover
+      if(!call_trigger_client(robot_to_robot_handover_client_, "robot_to_robot_handover_client")){
+        response->success = false;
+        response->message = "Left preaction failed";
+        return;
+      }
 
       RCLCPP_INFO(this->get_logger(), "Handover sequence completed");
       response->success = true;
@@ -601,6 +610,7 @@ class HumanToRobotHandover : public rclcpp::Node{
     rclcpp::Client<std_srvs::srv::Trigger>::SharedPtr unprepare_left_pose_tracker_client_;
     rclcpp::Client<std_srvs::srv::Trigger>::SharedPtr start_left_pose_tracker_client_;
     rclcpp::Client<std_srvs::srv::Trigger>::SharedPtr stop_left_pose_tracker_client_;
+    rclcpp::Client<std_srvs::srv::Trigger>::SharedPtr robot_to_robot_handover_client_;
 
     // servers
     rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr human_to_robot_handover_;
