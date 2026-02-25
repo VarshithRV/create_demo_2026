@@ -1,0 +1,11 @@
+/home/barracuda/ros2_ws_varsh/src/create_demo_2026/build/CMakeFiles/uninstall.dir
+/home/barracuda/ros2_ws_varsh/src/create_demo_2026/build/CMakeFiles/create_demo_2026_uninstall.dir
+/home/barracuda/ros2_ws_varsh/src/create_demo_2026/build/CMakeFiles/human_to_robot_handover.dir
+/home/barracuda/ros2_ws_varsh/src/create_demo_2026/build/CMakeFiles/human_to_robot_handover_v2.dir
+/home/barracuda/ros2_ws_varsh/src/create_demo_2026/build/CMakeFiles/test.dir
+/home/barracuda/ros2_ws_varsh/src/create_demo_2026/build/CMakeFiles/edit_cache.dir
+/home/barracuda/ros2_ws_varsh/src/create_demo_2026/build/CMakeFiles/rebuild_cache.dir
+/home/barracuda/ros2_ws_varsh/src/create_demo_2026/build/CMakeFiles/list_install_components.dir
+/home/barracuda/ros2_ws_varsh/src/create_demo_2026/build/CMakeFiles/install.dir
+/home/barracuda/ros2_ws_varsh/src/create_demo_2026/build/CMakeFiles/install/local.dir
+/home/barracuda/ros2_ws_varsh/src/create_demo_2026/build/CMakeFiles/install/strip.dir

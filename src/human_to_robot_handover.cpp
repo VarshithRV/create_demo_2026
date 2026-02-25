@@ -583,7 +583,7 @@ class HumanToRobotHandover : public rclcpp::Node{
 
       // wait for 3s and drop the object
       using namespace std::chrono_literals;
-      std::this_thread::sleep_for(3s);
+      // std::this_thread::sleep_for(3s);
       
       // gripper_off();
 

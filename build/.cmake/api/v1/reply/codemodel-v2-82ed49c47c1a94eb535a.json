@@ -1,0 +1,88 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-334412b2d088dd9b0118.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "create_demo_2026",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "create_demo_2026_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-create_demo_2026_uninstall-Debug-738f4bb1b7c4b04162b1.json",
+					"name" : "create_demo_2026_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "human_to_robot_handover::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-human_to_robot_handover-Debug-7514dc4d7a6dd107ed48.json",
+					"name" : "human_to_robot_handover",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "human_to_robot_handover_v2::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-human_to_robot_handover_v2-Debug-970ec32397793f236818.json",
+					"name" : "human_to_robot_handover_v2",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-Debug-2095f650e756b6a3eb3e.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/barracuda/ros2_ws_varsh/src/create_demo_2026/build",
+		"source" : "/home/barracuda/ros2_ws_varsh/src/create_demo_2026"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}
